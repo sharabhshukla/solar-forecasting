@@ -41,13 +41,11 @@ def train_model(train: pd.DataFrame, test: pd.DataFrame):
 
 
 def evaluate_model(model: LightGBMModel, test: pd.DataFrame):
-    train = TimeSeries.from_dataframe(train, time_col='datetime', value_cols=train.columns.drop('datetime'),
-                                      fill_missing_dates=True, fillna_value=np.nan)
     test = TimeSeries.from_dataframe(test, time_col='datetime', value_cols=test.columns.drop('datetime'),
                                      fill_missing_dates=True, fillna_value=np.nan)
-    covariate_cols = train.columns.drop('generation (w)').tolist()
+    covariate_cols = test.columns.drop('generation (w)').tolist()
     test_target = test['generation (w)']
-    preds = model.predict(n=12*24, past_covariates=train[covariate_cols].append(test[covariate_cols]))
+    preds = model.predict(n=12*24, past_covariates=test[covariate_cols].append(test[covariate_cols]))
     model_smape = smape(actual_series=test_target, pred_series=preds)
     print("Model SMAPE -> {}".format(model_smape))
 
