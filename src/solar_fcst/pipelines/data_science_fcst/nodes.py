@@ -5,7 +5,7 @@ generated using Kedro 0.18.2
 import numpy as np
 import pandas as pd
 from darts import TimeSeries
-from darts.models import LightGBMModel
+from darts.models import CatBoostModel
 from darts.utils.model_selection import train_test_split
 from darts.metrics.metrics import smape
 
@@ -33,21 +33,19 @@ def train_model(train: pd.DataFrame, test: pd.DataFrame):
         'cyclic': {'future': ['month', 'hour', 'dayofweek']},
         'datetime_attribute': {'future': ['hour', 'dayofweek']},
     }
-    lgb_model = LightGBMModel(lags_past_covariates=24 * 7 * 12, lags=24 * 7 * 12, output_chunk_length=12 * 24,
+    lgb_model = CatBoostModel(lags_past_covariates=24 * 7 * 12, lags=24 * 7 * 12, output_chunk_length=12 * 24,
                               verbosity=1,
                               n_jobs=-1)
     lgb_model.fit(train_target, past_covariates=train[covariate_cols])
     return lgb_model
 
 
-def evaluate_model(model: LightGBMModel, test: pd.DataFrame):
-    train = TimeSeries.from_dataframe(train, time_col='datetime', value_cols=train.columns.drop('datetime'),
-                                      fill_missing_dates=True, fillna_value=np.nan)
+def evaluate_model(model: CatBoostModel, test: pd.DataFrame):
     test = TimeSeries.from_dataframe(test, time_col='datetime', value_cols=test.columns.drop('datetime'),
                                      fill_missing_dates=True, fillna_value=np.nan)
-    covariate_cols = train.columns.drop('generation (w)').tolist()
+    covariate_cols = test.columns.drop('generation (w)').tolist()
     test_target = test['generation (w)']
-    preds = model.predict(n=12*24, past_covariates=train[covariate_cols].append(test[covariate_cols]))
+    preds = model.predict(n=12*24, past_covariates=test[covariate_cols].append(test[covariate_cols]))
     model_smape = smape(actual_series=test_target, pred_series=preds)
     print("Model SMAPE -> {}".format(model_smape))
 
