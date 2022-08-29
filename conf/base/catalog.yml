@@ -6,8 +6,35 @@
 
 pv_data_v1:
   type: pandas.ExcelDataSet
-  filepath: data/01_raw/PV_firstRelease.xlsx
+  filepath: data/01_raw/PV_firstRealease.xlsx
 
 pv_data_v2:
   type: pandas.ExcelDataSet
   filepath: data/01_raw/PV_secondRelease.xlsx
+
+pv_data_raw:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/PV+tempExt_2019.csv
+
+pv_data_raw_desc:
+  type: text.TextDataSet
+  filepath: data/01_raw/dataset_pv_temp_ext_description.txt
+
+pv_data_intermediate:
+  type: MemoryDataSet
+
+processed_raw_pv_data:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/preprocessed_raw_pv_data.csv
+
+training_data:
+  type: pandas.CSVDataSet
+  filepath: data/05_model_input/training_data.csv
+
+darts_model_lgb:
+  type: pickle.PickleDataSet
+  filepath: data/06_models/lgb_model.pkl
+  versioned: True
+
+testing_data:
+  type: MemoryDataSet

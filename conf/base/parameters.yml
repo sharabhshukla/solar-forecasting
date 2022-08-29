@@ -1,0 +1,7 @@
+
+
+time_frmt: '%m/%d/%y %I:%M:%S %p'
+unwanted_columns:
+  - Unnamed: 4
+date_col: date
+time_col: time
