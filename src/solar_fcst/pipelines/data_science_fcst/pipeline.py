@@ -23,8 +23,8 @@ def create_pipeline(**kwargs) -> Pipeline:
         ),
         node(
             func=evaluate_model,
-            inputs=["darts_model_lgb", "testing_data"],
-            outputs=[],
+            inputs=["darts_model_lgb", "training_data", "testing_data"],
+            outputs=None,
             name='model_evaluation'
         )
     ])
