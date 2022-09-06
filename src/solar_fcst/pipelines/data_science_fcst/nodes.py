@@ -5,7 +5,7 @@ generated using Kedro 0.18.2
 import numpy as np
 import pandas as pd
 from darts import TimeSeries
-from darts.models import CatBoostModel
+from darts.models import LightGBMModel
 from darts.utils.model_selection import train_test_split
 from darts.metrics.metrics import smape
 
@@ -33,12 +33,12 @@ def train_model(train: pd.DataFrame, test: pd.DataFrame):
         'cyclic': {'future': ['month', 'hour', 'dayofweek']},
         'datetime_attribute': {'future': ['hour', 'dayofweek']},
     }
-    lgb_model = CatBoostModel(lags_past_covariates=24 * 7 * 12, lags=24 * 7 * 12, output_chunk_length=12 * 24)
+    lgb_model = LightGBMModel(lags_past_covariates=24 * 7 * 12, lags=24 * 7 * 12, output_chunk_length=12 * 24, verbosity=2)
     lgb_model.fit(train_target, past_covariates=train[covariate_cols], verbose=True)
     return lgb_model
 
 
-def evaluate_model(model: CatBoostModel, train: pd.DataFrame, test: pd.DataFrame) -> None:
+def evaluate_model(model: LightGBMModel, train: pd.DataFrame, test: pd.DataFrame) -> None:
     test = TimeSeries.from_dataframe(train, time_col='datetime', value_cols=train.columns.drop('datetime'),
                                      fill_missing_dates=True, fillna_value=np.nan)
     test = TimeSeries.from_dataframe(test, time_col='datetime', value_cols=test.columns.drop('datetime'),

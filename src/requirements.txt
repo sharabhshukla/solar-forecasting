@@ -11,7 +11,7 @@ pytest-cov~=3.0
 pytest-mock>=1.7.1, <2.0
 pytest~=6.2
 darts~=0.21.0
-kedro[pandas.CSVDataSet, pandas.ExcelDataSet, pandas.ParquetDataSet]==0.18.2   # Specify optional Kedro dependencies
+kedro[pandas.CSVDataSet, pandas.ExcelDataSet]==0.18.2   # Specify optional Kedro dependencies
 kedro-viz~=4.0
 plotly~=5.10.0
 adtk~=0.6.2
