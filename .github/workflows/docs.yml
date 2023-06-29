@@ -3,10 +3,10 @@ name: Python Documentation
 on:
   push:
     branches:
-      - main  # Change this to the branch you want to trigger the workflow on
+      - master  # Change this to the branch you want to trigger the workflow on
   pull_request:
     branches:
-      - main  # Change this to the branch you want to trigger the workflow on
+      - master  # Change this to the branch you want to trigger the workflow on
 
 jobs:
   build:
