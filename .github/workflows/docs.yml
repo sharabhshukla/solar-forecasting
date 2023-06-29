@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Change this to your dependencies installation command
+          pip install -r src/requirements.txt  # Change this to your dependencies installation command
 
       - name: Generate documentation
         run: |
