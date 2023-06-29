@@ -1,0 +1,48 @@
+name: Python Documentation
+
+on:
+  push:
+    branches:
+      - main  # Change this to the branch you want to trigger the workflow on
+  pull_request:
+    branches:
+      - main  # Change this to the branch you want to trigger the workflow on
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'  # Change this to your desired Python version
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Change this to your dependencies installation command
+
+      - name: Generate documentation
+        run: |
+          # Change these commands according to your documentation generator and configuration
+          pip install sphinx
+          sphinx-build -b html docs/source docs/build
+
+      - name: Commit and push documentation
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git checkout -b docs  # Change this to the branch you want to push the documentation to
+          git add .
+          git commit -m "Generate documentation"
+          git push origin docs
+
+      - name: Deploy documentation to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build  # Change this to the directory where your documentation is generated
