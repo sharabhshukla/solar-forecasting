@@ -26,6 +26,7 @@ jobs:
           python -m pip install -r src/requirements.txt
           python -m pip install -U sphinx
           python -m pip install sphinx-rtd-theme
+          python -m pip install recommonmark
           # python -m pip install sphinxcontrib-apidoc
           python -m pip install sphinx-autoapi
 
